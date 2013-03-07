@@ -1,0 +1,125 @@
+<!--
+	Allthough this file is called view it does more than just set up the visual elements of the 
+	game engine, so we might like to think of a better name for it than view.xml.
+	
+	RenderClasses are hard coded classes that know how to position and move graphics. Renders are the 
+	implementations of the render classes that will be used in this specific game. These wil also be used 
+	to reference the correct graphics associated with GameObjects. The width & height referenced here are the 
+	actual viewable area, this will allow us to load & remove graphics from memory as we need to.
+	
+	GamesObjectClasses are the hardcoded classes that conform to the IGameObject interface, this is where most 
+	of the game specific code will come into effect.
+	
+	Each GameObject references a GamesObjectClass as its base class, the width & height are relative to a tile scale of 1x1. 
+	i.e. if we have a view of a map map with tiles of 12x12 and the game object image is 24x24 then the GameObject here 
+	will have width="2"and height="2".
+	
+	Each GameObject can have multiple Views, these views reference the graphics to be displayed for the GameObject in reference
+	to that view, each of the ViewSates will reference a .png file that will be rendered into an ImageStripAnimatedBitmap.as. 
+	The format for reaching these files will be "images/" + GameObject.Id + "_" + Render.ID + "_" + State.ID + ".png" this 
+	standard will save us a lot of space in the xml.
+	
+	Each of the Views inside a game object can be empty, if there are no graphics for that game object in the relevent Render.
+	
+	GameObject's can also have TriggerSets attached to them and have Attributes set on them, These triggersets obviously will 
+	execute when the GameObject in question fires the relevant event. Allthough you can set attributes on a GameObject in much the
+	same way you can on a Behavior, Trigger & TriggerSet in the script.xml these attributes will not be included in the automatic
+	heirachichal attribute lookup from a behavior, they will have to be specifically accessed.
+	
+	The Map Views are simmilar to the GameObject Views, with some slight differences. The map background images will be cut into 
+	tiles & will rely on naming conventions to be found and placed correctly. The files will be named: 
+	"images/" + Map.id + "_" + Redner.Id + "_" + Map Background Tile Y + "_" + Map Background Tile X + ".png" 
+
+	i.e. 
+	images/room1_iso25x25_1_1.png
+	images/room1_iso25x25_1_2.png
+	images/room1_iso25x25_2_1.png
+	images/room1_iso25x25_2_2.png
+
+	From the bgTileWitdth & bgTileHeight and from the render's tilewidth and tileheight we can calculate how many
+	background tile images there are. These images must exist for the backgrounds to work properly.
+-->
+
+<View>
+
+	<RenderClasses>
+		<Class id="iso" class="uk.co.dubit.gameEngine.render.Isometric" />
+		<Class id="2d" class="uk.co.dubit.gameEngine.render.Tile2D" />
+		<Class id="minimap2d" class="uk.co.dubit.gameEngine.render.MiniMap2D" />
+		<Class id="radar" class="uk.co.dubit.gameEngine.render.Radar" />
+	</RenderClasses>
+
+	<Renders>
+		<Render id="iso25x25" classId="iso" tileWidth="25" tileHeight="25" width="500" height="300" />
+	
+		<Render id="2d12x12" classId="2d" tileWidth="12" tileHeight="12" width="500" height="300" />
+		<Render id="2d24x24" classId="2d" tileWidth="24" tileHeight="24" width="500" height="300" />
+		<Render id="2d48x48" classId="2d" tileWidth="48" tileHeight="48" width="500" height="300" />
+	
+		<Render id="minimap" classId="minimap2d" tileWidth="5" tileHeight="5" width="100" height="100" />
+	
+		<Render id="radar" classId="radar" tileWidth="5" tileHeight="5" width="100" height="100" />
+	</Renders>
+
+	<GamesObjectClasses>
+		<Class id="pc" class="uk.co.dubit.gameEngine.gameobjects.PC"/>
+		<Class id="npc" class="uk.co.dubit.gameEngine.gameobjects.NPC"/>
+	</GameObjectClasses>
+	
+	<GameObjects>
+		<GameObject id="avatarRedneckPC" width="2.5" height="2.5" classId="pc">
+
+			<Views>
+				<View renderID="iso25x25">
+					<ViewState id="walking_N" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+					<ViewState id="walking_NE" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+					<ViewState id="walking_NW" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+				</View>
+			</Views>
+
+			<TriggerSets>
+				<TriggerSet id="0A" >
+					<Attributes>
+						<Attribute key="blah" value="one"/>
+					</Attributes>
+				</TriggerSet>
+			</TriggerSets>
+
+			<Attributes>
+				<Attribute key="blah" value="two"/>
+			</Attributes>
+		</GameObject>
+
+		<GameObject id="avatarRedneckNPC" width="2.5" height="2.5" classId="npc">
+			<Views>
+				<View renderID="iso25x25">
+					<ViewState id="walking_N" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+					<ViewState id="walking_NE" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+					<ViewState id="walking_NW" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+				</View>
+			</Views>
+
+			<Attributes>
+				<Attribute key="blah" value="one"/>
+			</Attributes>
+		</GameObject>
+	</GameObjects>
+	
+	<Maps>
+		<Map id="room1">
+			<Views>
+				<View renderId="iso25x25" bgTileWidth="1000" bgTileHeight="1000" />
+			</Views>
+		</Map>
+		<Map id="room2">
+			<Views>
+				<View renderId="iso25x25" bgTileWidth="1000" bgTileHeight="1000" />
+			</Views>
+		</Map>
+	</Maps>
+	
+</View>
+	
+
+
+

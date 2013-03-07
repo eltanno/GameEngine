@@ -1,0 +1,22 @@
+<render>
+
+	<RenderClasses>
+		<Class id="iso" class="uk.co.dubit.gameEngine.render.Isometric" />
+		<Class id="2d" class="uk.co.dubit.gameEngine.render.Tile2D" />
+		<Class id="minimap2d" class="uk.co.dubit.gameEngine.render.MiniMap2D" />
+		<Class id="radar" class="uk.co.dubit.gameEngine.render.Radar" />
+	</RenderClasses>
+
+	<Renders>
+		<Render id="iso25x25" classId="iso" tileWidth="25" tileHeight="25" width="500" height="300" />
+	
+		<Render id="2d12x12" classId="2d" tileWidth="12" tileHeight="12" width="500" height="300" />
+		<Render id="2d24x24" classId="2d" tileWidth="24" tileHeight="24" width="500" height="300" />
+		<Render id="2d48x48" classId="2d" tileWidth="48" tileHeight="48" width="500" height="300" />
+	
+		<Render id="minimap" classId="minimap2d" tileWidth="5" tileHeight="5" width="100" height="100" />
+	
+		<Render id="radar" classId="radar" tileWidth="5" tileHeight="5" width="100" height="100" />
+	</Renders>
+		
+</render>

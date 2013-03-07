@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	frameRate="250"
+	width="300" height="200"
+	applicationComplete="applicationComplete();" >
+	<mx:Script>
+		<![CDATA[
+			import logging.LogManager;
+
+			import uk.co.dubit.graphics.AnimatedBitmap;
+			import uk.co.dubit.graphics.BitmapDataManager;
+			import uk.co.dubit.graphics.StripAnimatedBitmap;
+			import uk.co.dubit.schedule.Clock;
+			import uk.co.dubit.schedule.Scheduler;
+
+			import mx.core.BitmapAsset;
+			import mx.core.UIComponent;
+
+			import flash.display.StageAlign;
+			import flash.display.StageScaleMode;
+			import flash.utils.setInterval;
+			
+			private var container :UIComponent;
+			private var bitmapDataManager :BitmapDataManager;
+			private var clock :Clock;
+			private var scheduler :Scheduler;
+			
+			[Embed(source="../bin/images/down1.png")] private var down1 :Class;
+			[Embed(source="../bin/images/down2.png")] private var down2 :Class;
+			[Embed(source="../bin/images/down3.png")] private var down3 :Class;
+			[Embed(source="../bin/images/down4.png")] private var down4 :Class;
+			[Embed(source="../bin/images/down5.png")] private var down5 :Class;
+			[Embed(source="../bin/images/down6.png")] private var down6 :Class;
+			[Embed(source="../bin/images/down7.png")] private var down7 :Class;
+			
+			[Embed(source="../bin/images/adventurer001_run_e.png")] private var adventurer001_run_e :Class;
+			[Embed(source="../bin/images/adventurer001_run_s.png")] private var adventurer001_run_s :Class;
+		
+			private var animatedBitmap1 :AnimatedBitmap;
+			private var animatedBitmap2 :AnimatedBitmap;
+			private var animatedBitmap3 :AnimatedBitmap;
+			private var stripAnimation1 :StripAnimatedBitmap;
+			private var stripAnimation2 :StripAnimatedBitmap;
+			
+			public function applicationComplete():void
+			{
+				LogManager.getInstance().disableLogging();
+				
+				this.stage.scaleMode = StageScaleMode.NO_SCALE;
+				this.stage.align = StageAlign.TOP_LEFT;
+				this.stage.focus = this;	
+				this.bitmapDataManager = new BitmapDataManager();
+				this.clock = new Clock();
+				this.scheduler = new Scheduler(this.clock);
+				
+				this.bitmapDataManager.addBitmapData("down1", BitmapAsset(new down1()).bitmapData);
+				this.bitmapDataManager.addBitmapData("down2", BitmapAsset(new down2()).bitmapData);
+				this.bitmapDataManager.addBitmapData("down3", BitmapAsset(new down3()).bitmapData);
+				this.bitmapDataManager.addBitmapData("down4", BitmapAsset(new down4()).bitmapData);
+				this.bitmapDataManager.addBitmapData("down5", BitmapAsset(new down5()).bitmapData);
+				this.bitmapDataManager.addBitmapData("down6", BitmapAsset(new down6()).bitmapData);
+				this.bitmapDataManager.addBitmapData("down7", BitmapAsset(new down7()).bitmapData);
+				this.bitmapDataManager.addBitmapData("adventurer001_run_e", BitmapAsset(new adventurer001_run_e()).bitmapData);
+				this.bitmapDataManager.addBitmapData("adventurer001_run_s", BitmapAsset(new adventurer001_run_s()).bitmapData);
+				
+				
+				this.container = new UIComponent();
+				this.addChild(container);
+				
+				this.animatedBitmap1 = new AnimatedBitmap(33, this.scheduler);
+				this.animatedBitmap1.addFrame(this.bitmapDataManager.getBitmapData("down1"));
+				this.animatedBitmap1.addFrame(this.bitmapDataManager.getBitmapData("down2"));
+				this.animatedBitmap1.addFrame(this.bitmapDataManager.getBitmapData("down3"));
+				this.animatedBitmap1.addFrame(this.bitmapDataManager.getBitmapData("down4"));
+				this.animatedBitmap1.addFrame(this.bitmapDataManager.getBitmapData("down5"));
+				this.animatedBitmap1.addFrame(this.bitmapDataManager.getBitmapData("down6"));
+				this.animatedBitmap1.addFrame(this.bitmapDataManager.getBitmapData("down7"));
+				this.container.addChild(this.animatedBitmap1);
+				
+				this.animatedBitmap2 = new AnimatedBitmap(33);
+				this.animatedBitmap2.x = 100;
+				this.animatedBitmap2.addFrame(this.bitmapDataManager.getBitmapData("down1"));
+				this.animatedBitmap2.addFrame(this.bitmapDataManager.getBitmapData("down2"));
+				this.animatedBitmap2.addFrame(this.bitmapDataManager.getBitmapData("down3"));
+				this.animatedBitmap2.addFrame(this.bitmapDataManager.getBitmapData("down4"));
+				this.animatedBitmap2.addFrame(this.bitmapDataManager.getBitmapData("down5"));
+				this.animatedBitmap2.addFrame(this.bitmapDataManager.getBitmapData("down6"));
+				this.animatedBitmap2.addFrame(this.bitmapDataManager.getBitmapData("down7"));
+				this.container.addChild(this.animatedBitmap2);
+				
+				this.animatedBitmap3 = new AnimatedBitmap(33);
+				this.animatedBitmap3.x = 200;
+				this.animatedBitmap3.addFrame(this.bitmapDataManager.getBitmapData("down1"));
+				this.animatedBitmap3.addFrame(this.bitmapDataManager.getBitmapData("down2"));
+				this.animatedBitmap3.addFrame(this.bitmapDataManager.getBitmapData("down3"));
+				this.animatedBitmap3.addFrame(this.bitmapDataManager.getBitmapData("down4"));
+				this.animatedBitmap3.addFrame(this.bitmapDataManager.getBitmapData("down5"));
+				this.animatedBitmap3.addFrame(this.bitmapDataManager.getBitmapData("down6"));
+				this.animatedBitmap3.addFrame(this.bitmapDataManager.getBitmapData("down7"));
+				this.container.addChild(this.animatedBitmap3);
+				
+				
+				this.stripAnimation1 = new StripAnimatedBitmap(this.bitmapDataManager.getBitmapData("adventurer001_run_e"), 80, 60);
+				this.stripAnimation1.y = 100;
+				this.container.addChild(this.stripAnimation1);
+				
+				this.stripAnimation2 = new StripAnimatedBitmap(this.bitmapDataManager.getBitmapData("adventurer001_run_s"), 80, 60);
+				this.stripAnimation2.y = 100;
+				this.stripAnimation2.x = 100;
+				this.container.addChild(this.stripAnimation2);
+				
+				flash.utils.setInterval(pauseClock, 5000);
+			}
+			
+			private function pauseClock():void
+			{
+				if(this.clock.isPaused())
+				{
+					this.clock.play();
+				}
+				else
+				{
+					this.clock.pause();
+				}
+				
+				this.pauseAnimations();
+			}
+			
+			private function pauseAnimations():void
+			{
+				this.animatedBitmap2.play(!this.animatedBitmap2.getIsPlaying());
+				this.animatedBitmap3.play(!this.animatedBitmap3.getIsPlaying());
+			}
+			
+		]]>
+	</mx:Script>
+	
+</mx:Application>

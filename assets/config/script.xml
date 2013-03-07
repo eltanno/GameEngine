@@ -1,0 +1,122 @@
+<!--
+ BehaviorDefinitions are references to either a class that conforms to IBehavior, or to a ScriptedBehavior that
+ accesses other behaviors to build a new behavior definition. We will store all BehaviorDefinitions in the
+ BehaviorFactory first, and then instantiate them as requested by the Triggers, and games objects etc.
+ 
+ Behaviors rely on attributes, these are accessed when the behavior is executed in the engine in a heirachical way.
+ The most important level being the uppermost parent ending at the Style the least important being the one set
+ at the BehaviorDefinition level. 
+
+ 
+
+ Style -> Trigger -> Behavior (possibly multiple levels) -> BehaviorDefinition.
+ 
+ Behaviors can also be conditional, waiting for an accept / reject response from a script or from the server to execute the
+ correct script.
+ 
+ Triggers are events that are fired by wither a Tile or a GameObject. A Style listens for any or all of these triggers
+ and will execute the behaviors associated with it.
+ 
+ Tiles trigger three events: onEnter, onExit, and onInside.  The Triggers are executed when a GameObject enters a tile,
+ leaves a tile, or is in side a tile respectively.
+ 
+ GameObjects trigger three events: onCollision, onStateChange & onPositionChange. These are executed when a GameObject
+ collides with another GameObject, changes state and changes position respectively.
+ 
+ We talked about having onKeyDown events too that can be fired in here but i think that
+ confuses issues right now & can be added later.
+--> 
+
+<script>
+
+   <BehaviorDefinitions>
+      <BehaviorDefinition id="die" classRef="com.itreasure.Behaviors.Die"/>
+      <BehaviorDefinition id="burn" classRef="com.itreasure.Behaviors.Burn"/>
+      <BehaviorDefinition id="door" classRef="com.itreasure.Behaviors.Door"/>
+      <BehaviorDefinition id="playSound" classRef="com.itreasure.Behaviors.PlaySound"/>
+      <BehaviorDefinition id="checkInventory" classRef="com.itreasure.Behaviors.CheckInventory"/> 
+
+      <BehaviorDefinition id="door2">
+         <Behavior id="checkInventory">
+            <Accept>
+               <Behavior id="opendoor"/>
+               <Behavior id="playSound">
+                  <Attributes> 
+                     <Attribute key="soundID" value="scream2.mp3"/>
+                  </Attributes>      
+               </Behavior>
+            </Accept>
+    
+            <Reject>
+               <Behavior id="showMessage"/>
+            </Reject>
+    
+            <Attributes>
+               <Attribute key="inventoryItem" value="houseKey"/>
+            </Attributes>
+         </Behavior>
+   
+         <Attributes>
+            <Attribute key="message" value="You can not open this door without the house key"/>
+            <Attribute key="sound" value="creaky.mp3"/>
+            <Attribute key="doorID" value="houseDoor"/>
+         </Attributes> 
+      </BehaviorDefinition>
+  
+      <BehaviorDefinition id="lava">
+         <Behavior id="die"/>   
+         <Behavior id="burn"/>
+         <Behavior id="playSound" delay="x">
+            <Attributes> 
+               <Attribute key="soundID" value="scream.mp3"/>
+            </Attributes>    
+         </Behavior>
+      </BehaviorDefinition>  
+  
+   </BehaviorDefinitions>
+ 
+   <Styles>
+      <Style id="02" name="lava">
+         <Trigger type="onEnter">
+            <Behavior id="setOnFire" />
+            <Behavior id="sapsHealth" />
+            <Attributes> 
+               <Attribute key="x" value="2"/>
+            </Attributes>
+         </Trigger>
+
+         <Trigger type="onInside">
+               <Behavior id="sapsHealth" />
+         </Trigger>
+
+         <Trigger type="onExit">
+            <Behavior id="sapsHealth" />
+         </Trigger> 
+
+         <Attributes> 
+            <Attribute key="x" value="2"/>
+         </Attributes>
+      </Style>
+  
+  
+      <Style id="0A" name="bad rude powerup">
+         <Trigger type="onEnter">
+            <Behavior id="badRudePowerups" />
+         </Trigger>
+      </Style>  
+  
+      <Style id="FA" name="house key">
+         <Trigger type="onCollision">
+            <Behavior id="houseKey" />
+         </Trigger>
+         <Trigger type="onStateChange">
+            <Behavior id="houseKey" />
+         </Trigger>
+         <Trigger type="onPositionChange">
+            <Behavior id="houseKey" />
+         </Trigger>
+      </Style>  
+  
+   </Styles>
+ 
+</script> 

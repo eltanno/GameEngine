@@ -1,0 +1,48 @@
+<script>
+	<BehaviorDefinitions>
+		<BehaviorDefinition id="attributeSetter" classRef="test.uk.co.dubit.gameEngine.script.behaviors.AttributeSetterBehavior"/>
+
+		<BehaviorDefinition id="attributeSetter2">
+			<Behavior id="attributeSetter">
+				<Attributes> 
+					<Attribute key="attribute" value="testAtt"/>
+				</Attributes> 
+			</Behavior>
+		</BehaviorDefinition>
+	</BehaviorDefinitions>
+ 
+	<Styles>
+		<Style id="01" name="tile enter">
+			<Trigger type="onTileEnter">
+				<Behavior id="attributeSetter2" />
+				<Attributes> 
+					<Attribute key="attribute" value="onTileEnter"/>
+				</Attributes>
+			</Trigger>
+		</Style>
+		<Style id="02" name="tile inside">
+			<Trigger type="onTileInside">
+				<Behavior id="attributeSetter2" />
+				<Attributes> 
+					<Attribute key="attribute" value="onTileInside"/>
+				</Attributes>
+			</Trigger>
+		</Style>
+		<Style id="03" name="tile exit">
+			<Trigger type="onTileExit">
+				<Behavior id="attributeSetter2" />
+				<Attributes> 
+					<Attribute key="attribute" value="onTileExit"/>
+				</Attributes>
+			</Trigger>
+		</Style>
+		<Style id="04" name="collision">
+			<Trigger type="onCollision">
+				<Behavior id="attributeSetter2" />
+				<Attributes> 
+					<Attribute key="attribute" value="onCollision"/>
+				</Attributes>
+			</Trigger>
+		</Style>
+	</Styles>
+</script> 

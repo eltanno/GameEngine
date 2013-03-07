@@ -1,0 +1,14 @@
+<Render>
+	<RenderClasses>
+		<RenderClass id="block" classRef="uk.co.dubit.gameEngine.render.BlockRender" />
+	</RenderClasses>
+
+	<RenderDefinitions>
+		<RenderDefinition id="blockRender1" classId="block" tileWidth="20" tileHeight="20" width="220" height="200" />
+		<RenderDefinition id="blockRender2" classId="block" tileWidth="10" tileHeight="10" width="100" height="100" />
+		<RenderDefinition id="blockRender3" classId="block" tileWidth="50" tileHeight="50" width="385" height="350" />
+		
+		<RenderDefinition id="test2d" classId="tile2D" tileWidth="50" tileHeight="50" width="500" height="500" />
+		<RenderDefinition id="depthSort" classId="tile2D" tileWidth="50" tileHeight="50" width="250" height="250" />
+	</RenderDefinitions>
+</Render>

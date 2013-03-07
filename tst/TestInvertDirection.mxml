@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	frameRate="250"
+	width="400" height="400"
+	applicationComplete="applicationComplete();" >
+	<mx:Script>
+		<![CDATA[
+			import uk.co.dubit.gameEngine.script.BehaviorConstants;
+			import uk.co.dubit.gameEngine.script.behaviors.InvertDirection;
+			import uk.co.dubit.gameEngine.render.BlockRender;
+			import uk.co.dubit.gameEngine.gameObjects.GameObjectConstants;
+			import uk.co.dubit.gameEngine.world.Direction;
+			import uk.co.dubit.gameEngine.world.TileMap;
+			import uk.co.dubit.gameEngine.gameObjects.IGameObject;
+			import uk.co.dubit.gameEngine.core.EngineManager;
+			import uk.co.dubit.gameEngine.core.Engine;
+			import flash.display.StageAlign;
+			import flash.display.StageScaleMode;
+			import mx.core.UIComponent;
+			
+			private var container :UIComponent;
+			private var engine :Engine;
+			private var gameObject :IGameObject;
+			private var tileMap :TileMap;
+			private var render :BlockRender;
+			
+			public function applicationComplete():void
+			{
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+				stage.align = StageAlign.TOP_LEFT;
+				stage.focus = this;	
+				this.container = new UIComponent();
+				this.addChild(container);
+				
+				EngineManager.getInstance().createEngine("testInvert", this.stage);
+				this.engine = EngineManager.getInstance().getEngine("testInvert");
+				
+				this.engine.getGameObjectFactory().createGameObject(GameObjectConstants.TYPE_BASIC,"gameObject",0.5,0.5,3.5,3.5);
+				this.engine.getTileMapManager().createTileMap("testMap", "ff,ff,ff,ff,ff,ff,ff|ff,00,00,00,00,00,ff|ff,00,00,00,00,00,ff|ff,00,00,00,00,00,ff|ff,00,00,00,00,00,ff|ff,00,00,00,00,00,ff|ff,ff,ff,ff,ff,ff,ff");
+				
+				this.tileMap = this.engine.getTileMapManager().getTileMap("testMap");
+				this.gameObject = this.engine.getGameObjectManager().getGameObject("gameObject");
+				
+				this.tileMap.addGameObject(this.gameObject);
+				this.gameObject.setAttribute(GameObjectConstants.ATT_SPEED_PER_SECOND, 0.3);
+				this.gameObject.move(Direction.NE);
+				
+				this.render = new BlockRender(this.engine, "render", 30, 30, 210, 210, this.tileMap);
+				this.render.startRendering();
+				this.container.addChild(this.render);
+			}
+			
+			public function invertVertDirection():void
+			{
+				var behavior :InvertDirection = new InvertDirection(this.engine);
+				behavior.setAttribute(BehaviorConstants.GAME_OBJECT_ID, "gameObject");
+				behavior.setAttribute(BehaviorConstants.VERTICAL, "true");
+				behavior.setAttribute(BehaviorConstants.HORIZONTAL, "false");
+				behavior.run();
+				
+				trace(this.gameObject.getDirection());
+			}
+			
+			public function invertHorizDirection():void
+			{
+				var behavior :InvertDirection = new InvertDirection(this.engine);
+				behavior.setAttribute(BehaviorConstants.GAME_OBJECT_ID, "gameObject");
+				behavior.setAttribute(BehaviorConstants.VERTICAL, "false");
+				behavior.setAttribute(BehaviorConstants.HORIZONTAL, "true");
+				behavior.run();
+				
+				trace(this.gameObject.getDirection());
+			}
+			
+			public function invertBothDirections():void
+			{
+				var behavior :InvertDirection = new InvertDirection(this.engine);
+				behavior.setAttribute(BehaviorConstants.GAME_OBJECT_ID, "gameObject");
+				behavior.setAttribute(BehaviorConstants.VERTICAL, "true");
+				behavior.setAttribute(BehaviorConstants.HORIZONTAL, "true");
+				behavior.run();
+				
+				trace(this.gameObject.getDirection());
+			}
+		]]>
+	</mx:Script>
+	<mx:Button x="10" y="368" label="horiz" id="btnHoriz" click="this.invertHorizDirection()"/>
+	<mx:Button x="72" y="368" label="vert" id="btnVert" click="this.invertVertDirection()"/>
+	<mx:Button x="130" y="368" label="both" id="btnBoth" click="this.invertBothDirections()"/>
+	
+</mx:Application>

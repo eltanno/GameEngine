@@ -1,0 +1,6 @@
+<input>
+	<GameKey keyCode="37" gameKeyId="moveUp" />
+	<GameKey keyCode="38" gameKeyId="moveLeft" />
+	<GameKey keyCode="39" gameKeyId="moveDown" />
+	<GameKey keyCode="40" gameKeyId="moveRight" />
+</input>

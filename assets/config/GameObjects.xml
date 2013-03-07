@@ -1,0 +1,42 @@
+<GameObjects>
+	<GameObjectClasses>
+		<GameObjectClass id="pc" classRef="uk.co.dubit.gameEngine.gameobjects.PC"/>
+		<GameObjectClass id="npc" classRef="uk.co.dubit.gameEngine.gameobjects.NPC"/>
+	</GameObjectClasses>
+
+	<GameObjectDefinitions>
+		<GameObjectDefinition id="avatarRedneckPC" width="2.5" height="2.5" classId="pc">
+
+			<Views>
+				<View renderID="iso25x25">
+					<ViewState imageSrc="images/001Redneck_iso25x25_walking_N.png" id="walking_N" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+					<ViewState imageSrc="images/001Redneck_iso25x25_walking_NE.png" id="walking_NE" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+					<ViewState imageSrc="images/001Redneck_iso25x25_walking_NW.png" id="walking_NW" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+				</View>
+			</Views>
+
+			<Styles>
+				<Style id="0A" />
+			</Styles>
+
+			<Attributes>
+				<Attribute key="blah" value="two"/>
+			</Attributes>
+		</GameObjectDefinition>
+
+		<GameObjectDefinition id="avatarRedneckNPC" width="2.5" height="2.5" classId="npc">
+			<Views>
+				<View renderID="iso25x25">
+					<ViewState id="walking_N" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+					<ViewState id="walking_NE" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+					<ViewState id="walking_NW" offsetX="0" offsetY="0" frameWidth="25" frameRate="75"/>
+				</View>
+			</Views>
+
+			<Attributes>
+				<Attribute key="blah" value="one"/>
+			</Attributes>
+		</GameObjectDefinition>
+		
+	</GameObjectDefinitions>
+</GameObjects>

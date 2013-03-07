@@ -1,0 +1,79 @@
+<!--
+	This is where it all comes together, the World.xml contains the references to the di0erent Map's or rooms within a game, 
+	the largest part of this is the grid. The Grid is the main way of attaching TriggerSets to tiles, the TriggerSets are
+	all referenced by Hex id's. The two most common TriggerSets will be reserved 00 for walkable and FF for non-walkable, 
+	non-walkable tiles will never need any other triggers so we can assume that any other TriggerSet defined in the 
+	script.xml will be walkable. 
+	
+	For any extra TriggerSets that need to be placed we use the TriggerSets tag in the map. This is in case of having a one off 
+	combination of TriggerSets that does not warrent setting up a new TriggerSet in the scrip.xml.
+	
+	The map id's need to match those in the view.xml for the backgrounds to be found.
+	
+	Finnally GameObjects get placed on the map, these reference the GameObject's defined i nteh view.xml.
+-->
+
+<World>
+
+	<Map id="room1">
+
+    	<Grid>
+			FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF
+		</Grid>
+		
+		<Styles>
+			<Style id="0A" column="3" row="3"/>
+		</Styles>
+
+		<GameObjects>
+			<GameObject id="go5" definitionId="avatarRedneckNPC" x="4" y="5"/>
+		 	<GameObject id="go6" definitionId="avatarRedneckNPC" x="5" y="5"/>
+		 	<GameObject id="go7" definitionId="avatarRedneckNPC" x="6" y="5"/>
+		 	<GameObject id="go8" definitionId="avatarRedneckNPC" x="7" y="5"/>
+		</GameObjects>
+
+		<Views>
+			<View renderId="iso25x25" bgTileWidth="1000" bgTileHeight="1000" />
+		</Views>
+	</Map>
+	
+	
+	<Map id="room2">
+    	<Grid>
+			FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,00,00,00,00,00,00,00,00,00,FF|
+			FF,FF,FF,FF,FF,FF,FF,FF,FF,FF,FF
+		</Grid>
+		
+		<Styles>
+			<Style id="0A" column="3" row="3"/>
+		</Styles>
+
+		<GameObjects>
+			<GameObject id="go5" definitionId="avatarRedneckNPC" x="4" y="5"/>
+		 	<GameObject id="go6" definitionId="avatarRedneckNPC" x="5" y="5"/>
+		 	<GameObject id="go7" definitionId="avatarRedneckNPC" x="6" y="5"/>
+		 	<GameObject id="go8" definitionId="avatarRedneckNPC" x="7" y="5"/>
+		</GameObjects>
+
+		<Views>
+			<View renderId="iso25x25" bgTileWidth="1000" bgTileHeight="1000" />
+		</Views>
+	</Map>
+</World>

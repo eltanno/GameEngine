@@ -1,0 +1,44 @@
+<GameObjects>
+	<GameObjectDefinitions>
+	
+		<GameObjectDefinition id="test1" width="0.5" height="0.5">			
+			<Views>
+				<View renderID="test2d">
+					<ViewState imageSrc="images/adventurer001_run_n.png" id="run_n" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_ne.png" id="run_ne" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_e.png" id="run_e" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_se.png" id="run_se" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_s.png" id="run_e" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_sw.png" id="run_sw" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_w.png" id="run_w" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_nw.png" id="run_nw" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+				</View>
+				<View renderID="depthSort">
+					<ViewState imageSrc="images/square.jpg" id="square" offsetX="0" offsetY="0" frameWidth="25" frameRate="25"/>
+				</View>
+			</Views>
+			<Styles>
+				<Style id="04" />
+			</Styles>
+		</GameObjectDefinition>
+
+		<GameObjectDefinition id="test2" width="0.25" height="0.25">	
+			<Views>
+				<View renderID="test2d">
+					<ViewState imageSrc="images/adventurer001_run_n.png" id="run_n" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_ne.png" id="run_ne" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_e.png" id="run_e" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_se.png" id="run_se" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_s.png" id="run_e" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_sw.png" id="run_sw" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_w.png" id="run_w" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+					<ViewState imageSrc="images/adventurer001_run_nw.png" id="run_nw" offsetX="0" offsetY="0" frameWidth="80" frameRate="25"/>
+				</View>
+			</Views>
+			<Styles>
+				<Style id="04" />
+			</Styles>
+		</GameObjectDefinition>
+		
+	</GameObjectDefinitions>
+</GameObjects>

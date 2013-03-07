@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	frameRate="250"
+	width="800" height="600"
+	applicationComplete="applicationComplete();" >
+	<mx:Script>
+		<![CDATA[
+			import test.uk.co.dubit.gameEngine.render.BlockRenderTest;
+			import test.uk.co.dubit.gameEngine.script.behaviors.AttributeSetterBehavior;
+
+			import uk.co.dubit.collections.IEnumerator;
+			import uk.co.dubit.gameEngine.core.Engine;
+			import uk.co.dubit.gameEngine.core.EngineManager;
+			import uk.co.dubit.gameEngine.gameObjects.GameObjectConstants;
+			import uk.co.dubit.gameEngine.gameObjects.IGameObject;
+			import uk.co.dubit.gameEngine.render.BlockRender;
+			import uk.co.dubit.gameEngine.render.Tile2D;
+			import uk.co.dubit.gameEngine.world.Direction;
+			import uk.co.dubit.gameEngine.world.TileMap;
+			import uk.co.dubit.utils.NumberUtils;
+
+			import mx.core.UIComponent;
+
+			import flash.display.StageAlign;
+			import flash.display.StageScaleMode;
+			import flash.text.TextField;
+			import flash.utils.setInterval;
+	
+			
+			private var container :UIComponent;
+			private var engine :Engine;
+			private var tileMap :TileMap;
+			private var depthTileMap :TileMap;
+			private var placeholder1 :AttributeSetterBehavior;
+			
+			private var render :Tile2D;
+			private var blockRender :BlockRender;
+			private var depthSortRender :Tile2D;
+			
+			private var renderX :Number = 0;
+			private var renderY :Number = 0;
+			private var firstLoad :Boolean = true;
+			
+			public function applicationComplete():void
+			{
+				this.stage.scaleMode = StageScaleMode.NO_SCALE;
+				this.stage.align = StageAlign.TOP_LEFT;
+				this.stage.focus = this;	
+				
+				this.container = new UIComponent();
+				this.addChild(container);
+				
+				var pressArrows :TextField = new TextField();
+				pressArrows.x = 260;
+				pressArrows.text = "Press arrows to scroll render's viewable area.";
+				pressArrows.width = pressArrows.textWidth;
+				this.container.addChild(pressArrows);
+				
+				EngineManager.getInstance().createEngine("testBlockRender", this.stage);
+				this.engine = EngineManager.getInstance().getEngine("testBlockRender");
+				
+				var blockTest :BlockRenderTest = new BlockRenderTest();
+				blockTest.setCallback(this.onFilesLoaded);
+				blockTest.loadFiles();
+			}
+			
+			public function onFilesLoaded():void
+			{
+				if(this.firstLoad)
+				{
+					//this.engine.getFileLoaderManager().removeObserver(this);
+					this.firstLoad = false;
+					this.tileMap = this.engine.getTileMapManager().getTileMap("map1");
+					this.depthTileMap = this.engine.getTileMapManager().getTileMap("depthSort");
+					
+					this.render = this.engine.getRenderFactory().createRender("test2d");
+					this.render.setTileMap(this.tileMap);
+					this.render.x = 5;
+					this.render.y = 25;
+					this.render.startRendering();
+					this.container.addChild(this.render);
+					
+					this.blockRender = this.engine.getRenderFactory().createRender("blockRender2");//new BlockRender(this.engine, "blockRender1", 20, 20, 220, 200, this.tileMap);
+					this.blockRender.setTileMap(this.tileMap);
+					this.blockRender.x = 560;
+					this.blockRender.y = 25;
+					this.blockRender.startRendering();
+					this.container.addChild(this.blockRender);
+					
+					this.drawDepthSort();
+					
+					this.render.scrollTo(5000, 5000);
+					this.blockRender.scrollTo((this.render.getViewableX() /5), (this.render.getViewableY() /5));
+				
+					moveGameObjects();
+					flash.utils.setInterval(moveGameObjects, 10000);
+					flash.utils.setInterval(scrollRender, 30);
+				}
+			}
+			
+			private function drawDepthSort():void
+			{
+				this.depthSortRender = this.engine.getRenderFactory().createRender("depthSort");
+				this.depthSortRender.setTileMap(this.depthTileMap);
+				this.depthSortRender.x = 520;
+				this.depthSortRender.y = 150;
+				this.depthSortRender.startRendering();
+				this.container.addChild(this.depthSortRender);
+				
+				var go0 :IGameObject = this.engine.getGameObjectManager().getGameObject("depthSort0");
+				var go1 :IGameObject = this.engine.getGameObjectManager().getGameObject("depthSort1");
+				var go2 :IGameObject = this.engine.getGameObjectManager().getGameObject("depthSort2");
+				
+				go0.setAttribute(GameObjectConstants.ATT_SPEED_PER_SECOND, 0.2);
+				go1.setAttribute(GameObjectConstants.ATT_SPEED_PER_SECOND, 0.2);
+				go2.setAttribute(GameObjectConstants.ATT_SPEED_PER_SECOND, 0.2);
+				
+				go0.move(Direction.S);
+				go2.move(Direction.N);
+			}
+			
+			private function scrollRender():void
+			{
+				this.renderY = this.render.getViewableY();
+				this.renderY += (this.engine.getInputManager().isDown(38))? -2.5 : 0;
+				this.renderY += (this.engine.getInputManager().isDown(40))? 2.5 : 0;
+				
+				this.renderX = this.render.getViewableX();
+				this.renderX += (this.engine.getInputManager().isDown(37))? -2.5 : 0;
+				this.renderX += (this.engine.getInputManager().isDown(39))? 2.5 : 0;
+				
+				this.render.scrollTo(this.renderX, this.renderY);
+				this.blockRender.scrollTo((this.render.getViewableX() /5), (this.render.getViewableY() /5));
+			}
+			
+			public function moveGameObjects():void
+			{
+				var enum :IEnumerator = this.tileMap.getGameObjects().getEnumerator();
+				
+				while(enum.hasNext())
+				{
+					enum.moveNext();
+					
+					var gameObject :IGameObject = IGameObject(enum.getCurrent());
+					var direction :Number = Math.random()*(2*Math.PI);
+					gameObject.setAttribute(GameObjectConstants.ATT_SPEED_PER_SECOND, Math.random() * 0.75);
+					gameObject.move(direction);
+					
+					if(NumberUtils.withinRange(Direction.SEE, Direction.SSE, direction))
+					{
+						gameObject.setState("run_se");
+					}
+					else if(NumberUtils.withinRange(Direction.SSE, Direction.SSE, direction))
+					{
+						gameObject.setState("run_s");
+					}
+					else if(NumberUtils.withinRange(Direction.SSW, Direction.SWW, direction))
+					{
+						gameObject.setState("run_sw");
+					}
+					else if(NumberUtils.withinRange(Direction.SWW, Direction.NWW, direction))
+					{
+						gameObject.setState("run_w");
+					}
+					else if(NumberUtils.withinRange(Direction.NWW, Direction.NNW, direction))
+					{
+						gameObject.setState("run_nw");
+					}
+					else if(NumberUtils.withinRange(Direction.NNW, Direction.NNE, direction))
+					{
+						gameObject.setState("run_n");
+					}
+					else if(NumberUtils.withinRange(Direction.NNE, Direction.NEE, direction))
+					{
+						gameObject.setState("run_ne");
+					}
+					else
+					{
+						gameObject.setState("run_e");
+					}
+				
+				}
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Application>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	frameRate="250"
+	width="800" height="600"
+	applicationComplete="applicationComplete();" >
+	<mx:Script>
+		<![CDATA[
+			import test.uk.co.dubit.gameEngine.render.BlockRenderTest;
+			import test.uk.co.dubit.gameEngine.script.behaviors.AttributeSetterBehavior;
+
+			import uk.co.dubit.collections.IEnumerator;
+			import uk.co.dubit.gameEngine.core.Engine;
+			import uk.co.dubit.gameEngine.core.EngineManager;
+			import uk.co.dubit.gameEngine.gameObjects.GameObjectConstants;
+			import uk.co.dubit.gameEngine.gameObjects.IGameObject;
+			import uk.co.dubit.gameEngine.render.BlockRender;
+			import uk.co.dubit.gameEngine.world.TileMap;
+
+			import mx.core.UIComponent;
+
+			import flash.display.StageAlign;
+			import flash.display.StageScaleMode;
+			import flash.text.TextField;
+			import flash.utils.setInterval;
+	
+			
+			private var container :UIComponent;
+			private var engine :Engine;
+			private var tileMap :TileMap;
+			private var placeholder1 :AttributeSetterBehavior;
+			
+			private var render1 :BlockRender;
+			private var render2 :BlockRender;
+			private var render3 :BlockRender;
+			
+			private var renderX :Number = 0;
+			private var renderY :Number = 0;
+			
+			public function applicationComplete():void
+			{
+				this.stage.scaleMode = StageScaleMode.NO_SCALE;
+				this.stage.align = StageAlign.TOP_LEFT;
+				this.stage.focus = this;	
+				
+				this.container = new UIComponent();
+				this.addChild(container);
+				
+				var pressArrows :TextField = new TextField();
+				pressArrows.x = 260;
+				pressArrows.text = "Press arrows to scroll render's viewable area.";
+				pressArrows.width = pressArrows.textWidth;
+				this.container.addChild(pressArrows);
+				
+				EngineManager.getInstance().createEngine("testBlockRender", this.stage);
+				this.engine = EngineManager.getInstance().getEngine("testBlockRender");
+				
+				var blockTest :BlockRenderTest = new BlockRenderTest();
+				blockTest.setCallback(this.onFilesLoaded);
+				blockTest.loadFiles();
+			}
+			
+			public function onFilesLoaded():void
+			{
+				this.tileMap = this.engine.getTileMapManager().getTileMap("map1");
+				
+				this.render1 = this.engine.getRenderFactory().createRender("blockRender1");//new BlockRender(this.engine, "blockRender1", 20, 20, 220, 200, this.tileMap);
+				this.render1.setTileMap(this.tileMap);
+				this.render1.x = 20;
+				this.render1.y = 20;
+				//this.render1.startRendering();
+				this.container.addChild(this.render1);
+				
+				this.render2 = this.engine.getRenderFactory().createRender("blockRender2");//new BlockRender(this.engine, "blockRender2", 5, 5, 55, 50, this.tileMap);
+				this.render2.setTileMap(this.tileMap);
+				this.render2.x = 20;
+				this.render2.y = 240;
+				this.render2.startRendering();
+				this.container.addChild(this.render2);
+				
+				this.render3 = this.engine.getRenderFactory().createRender("blockRender3");//new BlockRender(this.engine, "blockRender3", 50, 50, 385, 350, this.tileMap);
+				this.render3.setTileMap(this.tileMap);
+				this.render3.x = 260;
+				this.render3.y = 20;
+				this.render3.startRendering();
+				this.container.addChild(this.render3);
+				
+				moveGameObjects();
+				flash.utils.setInterval(moveGameObjects, 10000);
+				flash.utils.setInterval(scrollRender, 30);
+				flash.utils.setInterval(switchRendering, 5000);
+			}
+			
+			public function moveGameObjects():void
+			{
+				var enum :IEnumerator = this.tileMap.getGameObjects().getEnumerator();
+				
+				while(enum.hasNext())
+				{
+					enum.moveNext();
+					
+					var gameObject :IGameObject = IGameObject(enum.getCurrent());
+					var direction :Number = Math.random()*(2*Math.PI);
+					gameObject.setAttribute(GameObjectConstants.ATT_SPEED_PER_SECOND, Math.random() * 0.75);
+					gameObject.move(direction);
+				}
+			}
+			
+			public function switchRendering():void
+			{
+				this.switchRender(this.render1);
+				this.switchRender(this.render2);
+				//this.switchRender(this.render3);
+			}
+			
+			private function switchRender(render:BlockRender):void
+			{
+				if(render.isRendering())
+				{
+					render.stopRendering();
+				}
+				else
+				{
+					render.startRendering();
+				}
+			}
+			
+			private function scrollRender():void
+			{
+				this.renderY = this.render3.getViewableY();
+				this.renderY += (this.engine.getInputManager().isDown(38))? -1 : 0;
+				this.renderY += (this.engine.getInputManager().isDown(40))? 1 : 0;
+				
+				this.renderX = this.render3.getViewableX();
+				this.renderX += (this.engine.getInputManager().isDown(37))? -1 : 0;
+				this.renderX += (this.engine.getInputManager().isDown(39))? 1 : 0;
+				
+				this.render3.scrollTo(this.renderX, this.renderY);
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Application>

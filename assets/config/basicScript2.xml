@@ -1,0 +1,32 @@
+<script>
+	<BehaviorDefinitions>
+		<BehaviorDefinition id="attributeSetter" classRef="test.uk.co.dubit.gameEngine.script.behaviors.AttributeSetterBehavior"/>
+		
+		<BehaviorDefinition id="test2">
+			<Behavior id="attributeSetter">
+				<Attributes> 
+					<Attribute key="attribute" value="test2"/>
+				</Attributes> 
+			</Behavior>
+      	</BehaviorDefinition>
+	</BehaviorDefinitions>
+	
+	<Styles>
+		<Style id="01" name="testXml1">
+			<Trigger event="onEnter">
+				<Behavior id="attributeSetter">
+					<Attributes> 
+						<Attribute key="attribute" value="testXml1"/>
+					</Attributes>
+				</Behavior>
+			</Trigger>
+		</Style>
+	</Styles>
+	<Styles>
+		<Style id="02" name="testXml2">
+			<Trigger event="onExit">
+				<Behavior id="test2" />
+			</Trigger>
+		</Style>
+	</Styles>
+</script>

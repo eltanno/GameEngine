@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	frameRate="250"
+	width="800" height="600"
+	applicationComplete="applicationComplete();" >
+	<mx:Script>
+		<![CDATA[
+			import flash.display.StageAlign;
+			import flash.display.StageScaleMode;
+			import flash.events.KeyboardEvent;
+			import flash.ui.Keyboard;
+			
+			
+			public function applicationComplete():void
+			{
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+				stage.align = StageAlign.TOP_LEFT;
+				stage.focus = this;	
+				
+				this.stage.addEventListener(KeyboardEvent.KEY_DOWN, this.__onKeyPressed);
+				this.stage.addEventListener(KeyboardEvent.KEY_UP, this.__onKeyReleased);
+			}
+			
+			private var keysDown :Object = new Object();
+			
+			private function __onKeyPressed(event:KeyboardEvent):void
+			{
+				if(!keysDown[event.keyCode.toString()])
+				{
+					keysDown[event.keyCode.toString()] = true;
+					trace("key press: " + event.keyCode.toString());
+				}
+			}
+			
+			private function __onKeyReleased(event:KeyboardEvent):void
+			{
+				if(keysDown[event.keyCode.toString()])
+				{
+					keysDown[event.keyCode.toString()] = false;
+					trace("key release: " + event.keyCode.toString());
+				}
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Application>

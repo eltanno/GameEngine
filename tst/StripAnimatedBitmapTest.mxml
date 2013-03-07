@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="absolute" 
+	frameRate="250"
+	width="500" height="400"
+	applicationComplete="applicationComplete();" 
+	implements="uk.co.dubit.gameEngine.loaders.IFileLoaderManagerObserver"
+	>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import uk.co.dubit.gameEngine.core.EngineManager;
+			import uk.co.dubit.gameEngine.core.Engine;
+			import uk.co.dubit.gameEngine.loaders.IFileLoader;
+			import uk.co.dubit.gameEngine.loaders.IFileLoaderManagerObserver;
+			import uk.co.dubit.graphics.StripAnimatedBitmap;
+			import flash.display.StageAlign;
+			import flash.display.StageScaleMode;
+			import mx.core.UIComponent;
+			
+			private var container :UIComponent;
+			private var engine :Engine;
+			private var bitmapId :String;
+			private var frameWidth :int;
+			private var imgFrameRate :int;
+			
+			private var stripBitmap :StripAnimatedBitmap;
+			
+			public function applicationComplete():void
+			{
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+				stage.align = StageAlign.TOP_LEFT;
+				stage.focus = this;	
+				
+				container = new UIComponent();
+				container.x = 30;
+				container.y = 130;
+				this.addChild(container);
+				
+				EngineManager.getInstance().createEngine("testStripBitmap", this.stage);
+				this.engine = EngineManager.getInstance().getEngine("testStripBitmap");
+				this.engine.getFileLoaderManager().addObserver(this);
+			}
+						
+			public function loadStripBitmap():void
+			{
+				var fileLocation :String = this.txtFileLocation.text;
+				var frameWidth :String = this.txtFrameWidth.text;
+				var fps :String = this.txtFPS.text;
+				
+				if(fileLocation.length > 0)
+				{
+					if(frameWidth.length > 0 && !isNaN(Number(frameWidth)) && (Number(frameWidth) > 0))
+					{
+						if(fps.length > 0 && !isNaN(Number(fps)) && (Number(fps) > 0))
+						{
+							this.bitmapId = this.engine.getFileLoaderManager().getBitmapIdFromFileName(fileLocation);
+							this.frameWidth = Number(frameWidth);
+							this.imgFrameRate = 1000/Number(fps);
+							
+							this.engine.getFileLoaderManager().addFile(fileLocation);
+							this.engine.getFileLoaderManager().loadFiles();
+						}
+						else
+						{
+							Alert.show("FPS width must be a positive number.", "Warning", 0, this);
+						}
+					}
+					else
+					{
+						Alert.show("Frame width must be a positive number.", "Warning", 0, this);
+					}
+				}
+				else
+				{
+					Alert.show("You must select an image file.", "Warning", 0, this);
+				}
+			}
+			
+			public function onFilesLoaded():void
+			{
+				if(this.stripBitmap != null)
+				{
+					if(this.container.contains(this.stripBitmap))
+					{
+						this.container.removeChild(stripBitmap);
+					}
+				}
+				
+				this.stripBitmap = new StripAnimatedBitmap(this.engine.getBitmapDataManager().getBitmapData(this.bitmapId), this.frameWidth, this.imgFrameRate);
+				this.container.addChild(this.stripBitmap);
+			}
+			
+			public function onFileLoadError(loader:IFileLoader, error:String):void{
+				Alert.show(error, "Error", 0, this);
+			}
+			
+			public function onFileProgress(loader:IFileLoader, bytesLoaded:uint, bytesTotal:uint):void{}
+	        public function onFileHttpStatus(loader:IFileLoader, status:int):void{}
+		]]>
+	</mx:Script>
+	<mx:TextInput id="txtFileLocation" top="43" right="10" left="98"/>
+	<mx:Button label="load Strip" id="btnLoad" right="10" top="124" click="this.loadStripBitmap()"/>
+	<mx:Label text="StripAnimatedBitmap Tester" id="lblTitle" fontFamily="Arial" fontWeight="bold" fontSize="16" left="10" top="10" right="15"/>
+	<mx:Label x="10" y="45" text="Image File:"/>
+	<mx:Label x="10" y="71" text="Frame Width:"/>
+	<mx:TextInput x="99" y="69" width="80" id="txtFrameWidth"/>
+	<mx:Label x="10" y="97" text="FPS:"/>
+	<mx:TextInput x="99" y="95" width="80" id="txtFPS"/>
+	
+</mx:Application>

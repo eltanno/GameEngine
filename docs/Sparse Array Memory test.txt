@@ -1,0 +1,19 @@
+Flash Player Footprint: 11.6 MB
+
+Array all null entries:
+
+100x100 (10,000 tiles):			11.65MB
+1000x1000 (1,000,000 tiles):		11.71MB
+10000x10000 (100,000,000 tiles):	12.39MB
+
+Array with 1 bit entries (1's & 0's):
+
+100x100 (10,000 tiles):			11.69MB
+1000x1000 (1,000,000 tiles):		15.78MB
+10000x10000 (100,000,000 tiles):	490.74MB
+
+Array with 1 bit entries (1's & 0's) & occasional Basic Tile Instances (roughly 1/20):
+
+100x100 (10,000 tiles):			13.07MB
+1000x1000 (1,000,000 tiles):		24.29MB
+10000x10000 (100,000,000 tiles):	script timeout;

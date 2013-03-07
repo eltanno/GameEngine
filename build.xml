@@ -1,0 +1,85 @@
+<project name="Build" default="init" basedir=".">
+
+	<property name="framerate" value="250"/>
+
+	<property name="src.dir" value="src"/>
+	<property name="lib.dir" value="lib"/>
+	<property name="build.dir" value="build"/>
+	<property name="context.dir" value="context"/>
+	<property name="library.dir" value="library"/>
+	<property name="flex.dir" value="D:\Program Files\Adobe\Flex Builder 2 Plug-in\Flex SDK 2\frameworks\source"/>
+	<property name="asunit.dir" value="D:\dev\!AS3 Libs\ASUnitAS3Framework"/>
+	<property name="as3logger.dir" value="D:\dev\!AS3 Libs\as3logger/as3logger/src/"/>
+	<property name="output.file" value="application.swf"/>
+	<property name="tests.file" value="tests.swf"/>
+	<property name="application.file" value="src/Main.as" />
+	<property name="test.file" value="tst/Main.as" />
+
+	<property name="FPS" value="true"/>
+	<property name="DEBUG" value="true"/>
+
+	 <!-- Default target -->
+	 <target name="init" depends="engine">
+		
+	 </target>
+
+	<target name="engine" depends="tests" description="AS3: Build engine">
+		
+		<mkdir dir="${build.dir}"/>
+		<copy todir="${build.dir}">
+			<fileset dir="${context.dir}">
+				<include name="**/*.xml"/>
+				<include name="**/*.css"/>
+				<include name="**/*.html"/>
+				<include name="**/*.js"/>				
+				<include name="**/*.properties"/>
+			</fileset>
+			<fileset dir="${library.dir}">
+				<include name="**/*.png"/>
+				<include name="**/*.jpg"/>
+			</fileset>
+		</copy>		
+		
+		<exec executable="D:\Program Files\Adobe\Flex Builder 2 Plug-in\Flex SDK 2\bin\mxmlc" failonerror="true">
+			<arg value = "${application.file}"/>
+			
+			<arg value = "-output"/>
+			<arg value = "${build.dir}/${output.file}"/>
+
+			<arg value = "-compiler.optimize"/>
+			<arg value = "-compiler.debug"/>
+			<arg value = "-default-frame-rate"/>
+			<arg value = "${framerate}"/>
+			<arg value = "-source-path"/>
+			<arg value = "${src.dir} " />
+			<arg value = "${flex.dir}/ "/>
+			<arg value = "${as3logger.dir}/ "/>
+		</exec> 	
+	</target>
+
+	<target name="tests" description="AS3: Build tests">
+		<exec executable="D:\Program Files\Adobe\Flex Builder 2 Plug-in\Flex SDK 2\bin\mxmlc" failonerror="true">
+			<arg value = "${test.file}"/>
+
+			<arg value = "-output"/>
+			<arg value = "${build.dir}/${tests.file}"/>
+
+			<arg value = "-compiler.optimize"/>
+			<arg value = "-compiler.debug"/>
+			<arg value = "-default-frame-rate"/>
+			<arg value = "${framerate}"/>
+			<arg value = "-source-path"/>
+			<arg value = "${src.dir} " />
+			<arg value = "${flex.dir}/ "/>
+			<arg value = "${asunit.dir}/ "/>
+			<arg value = "${as3logger.dir}/ "/>
+			
+		</exec> 	
+		
+		<exec executable="D:\Program Files\Adobe\Flex Builder 2 Plug-in\Player\debug\SAFlashPlayer.exe" failonerror="false">
+			<arg value = "D:\dev\Flex2\GameEngine\build\tests.swf"/>
+		</exec>
+	</target>
+
+</project>
+
